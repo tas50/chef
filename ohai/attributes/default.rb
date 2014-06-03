@@ -19,8 +19,8 @@
 
 # FHS location would be /var/lib/chef/ohai_plugins or similar.
 fhs_prefix = case node[:os]
-  when "freebsd" then "/usr/local/etc"
-  else "/etc"
+  when 'freebsd' then '/usr/local/etc'
+  else '/etc'
 end
 
 default[:ohai][:plugin_path] = "#{fhs_prefix}/chef/ohai_plugins"

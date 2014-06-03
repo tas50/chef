@@ -8,7 +8,6 @@ require 'ohai'
 
 module OhaiUtils
   class DumpOhai
-
     def initialize(target)
       @target = target
     end
@@ -37,10 +36,10 @@ module OhaiUtils
       facts = {}
 
       oh.data.each_pair do |key, val|
-          ohai_flatten(key,val, [], facts)
+        ohai_flatten(key, val, [], facts)
       end
 
-      fp=open(@target,"w")
+      fp = open(@target, 'w')
       fp.write(facts.to_yaml)
       fp.close
     end
