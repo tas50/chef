@@ -11,7 +11,6 @@ Ohai.plugin(:Raid) do
   provides 'raid/devices'
 
   collect_data(:linux) do
-    raid Mash.new
 
     # Sample data
     # 05:00.0 "RAID bus controller" "Hewlett-Packard Company" "Smart Array G6 controllers" -r01 "Hewlett-Packard Company" "Smart Array P410i"
@@ -39,6 +38,9 @@ Ohai.plugin(:Raid) do
       end
     end
 
-    raid[:devices] = devices
+    unless devices.empty?
+      raid Mash.new
+      raid[:devices] = devices
+    end
   end
 end
