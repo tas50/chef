@@ -2,8 +2,9 @@
 ---
 
 # The name of the product keys for this product (from mixlib-install)
-product_key:
-  - chef
+# setting this value also tells expeditor its an omnibus build.
+# product_key:
+#   - chef
 
 # Slack channel in Chef Software slack to send notifications about build failures, etc
 slack:
@@ -53,6 +54,7 @@ pipelines:
       trigger: default
   - habitat/build
   - habitat/test:
+      public: true
       definition: .expeditor/habitat-test.pipeline.yml
       trigger: default
   - hab-export:
@@ -77,6 +79,9 @@ pipelines:
   - macos_universal_package:
       description: Builds universal macos package using arch specific packages
       definition: .expeditor/macos_universal_package.pipeline.yml
+  - gem_push_artifactory:
+      description: Builds and uploads the gems to artifactory
+      definition: .expeditor/gem_push_artifactory.pipeline.yml
 
 github:
   # This deletes the GitHub PR branch after successfully merged into the release branch
@@ -107,18 +112,7 @@ changelog:
   rollup_header: Changes not yet released to stable
 
 subscriptions:
-  # the omnibus/docker/gem chain
-  - workload: artifact_published:unstable:chef:{{version_constraint}}
-    actions:
-      # - trigger_pipeline:docker/build
-      - trigger_pipeline:macos_universal_package
-  # - workload: artifact_published:current:chef:{{version_constraint}}
-  #   actions:
-  #     - bash:.expeditor/promote-docker-images.sh
   - workload: project_promoted:{{agent_id}}:*
-    actions:
-      - built_in:promote_artifactory_artifact
-  - workload: artifact_published:stable:chef:{{version_constraint}}
     actions:
       - built_in:rollover_changelog
       # - bash:.expeditor/update_dockerfile.sh
@@ -165,6 +159,7 @@ subscriptions:
     actions:
       # when all of the hab package publish to the unstable channel, test and promote them
       - trigger_pipeline:habitat/test
+      - trigger_pipeline:gem_push_artifactory
       - trigger_pipeline:docker/build
 
   # subscriptions to Ruby gem dependencies' releases, open PR for updates

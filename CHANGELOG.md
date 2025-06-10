@@ -1,17 +1,40 @@
 <!-- usage documentation: http://expeditor-docs.es.chef.io/configuration/changelog/ -->
 This changelog lists individual merged pull requests to Chef Infra Client and geared towards developers. For a list of significant changes per release see the [Chef Infra Client Release Notes](https://docs.chef.io/release_notes_client/).
 
-<!-- latest_release 19.1.10 -->
-## [v19.1.10](https://github.com/chef/chef/tree/v19.1.10) (2025-03-28)
+<!-- latest_release 19.1.33 -->
+## [v19.1.33](https://github.com/chef/chef/tree/v19.1.33) (2025-06-05)
 
 #### Merged Pull Requests
-- Migrate from chefstyle -&gt; cookstyle [#14922](https://github.com/chef/chef/pull/14922) ([tas50](https://github.com/tas50))
+- Bug fix for apt_repository when creating a new keyring [#15008](https://github.com/chef/chef/pull/15008) ([leklund](https://github.com/leklund))
 <!-- latest_release -->
 
 <!-- release_rollup since=18.5.0 -->
 ### Changes not yet released to stable
 
 #### Merged Pull Requests
+- Bug fix for apt_repository when creating a new keyring [#15008](https://github.com/chef/chef/pull/15008) ([leklund](https://github.com/leklund)) <!-- 19.1.33 -->
+- make sure the right paths get put in the native ffi gem runpath [#15038](https://github.com/chef/chef/pull/15038) ([mwrock](https://github.com/mwrock)) <!-- 19.1.32 -->
+- Suppress CHANGELOG.md linelint [#15039](https://github.com/chef/chef/pull/15039) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 19.1.31 -->
+- Add line-lint linter [#15009](https://github.com/chef/chef/pull/15009) ([jaymzh](https://github.com/jaymzh)) <!-- 19.1.30 -->
+- Drop FFI pin, plus a bunch of assorted other bits [#14911](https://github.com/chef/chef/pull/14911) ([jaymzh](https://github.com/jaymzh)) <!-- 19.1.29 -->
+- Updating the builders to pull from the stable channel [#15024](https://github.com/chef/chef/pull/15024) ([johnmccrae](https://github.com/johnmccrae)) <!-- 19.1.28 -->
+- Trying a different route for the gpg [#15030](https://github.com/chef/chef/pull/15030) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 19.1.27 -->
+- add editor config files [#15017](https://github.com/chef/chef/pull/15017) ([Stromweld](https://github.com/Stromweld)) <!-- 19.1.26 -->
+- Pull in latest ohai [#14972](https://github.com/chef/chef/pull/14972) ([jaymzh](https://github.com/jaymzh)) <!-- 19.1.25 -->
+- fix: ensure load_all_files ignores broken links in the cookbook dir CHEF-1958 [#15006](https://github.com/chef/chef/pull/15006) ([mauroseb](https://github.com/mauroseb)) <!-- 19.1.24 -->
+- Temporary bandaid to fix choco spec failures in GHA [#15004](https://github.com/chef/chef/pull/15004) ([neha-p6](https://github.com/neha-p6)) <!-- 19.1.23 -->
+- Fix windows_user_privilege example. [#14988](https://github.com/chef/chef/pull/14988) ([williamtheaker](https://github.com/williamtheaker)) <!-- 19.1.22 -->
+- Replace reference to ChefDK with Chef Workstation (obvious fix) [#14986](https://github.com/chef/chef/pull/14986) ([williamtheaker](https://github.com/williamtheaker)) <!-- 19.1.21 -->
+- Forward port resource reporter truncation [#14980](https://github.com/chef/chef/pull/14980) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 19.1.20 -->
+- Revert kitchen tests to run on Ubuntu 22.04 VMs [#14979](https://github.com/chef/chef/pull/14979) ([jaymzh](https://github.com/jaymzh)) <!-- 19.1.19 -->
+- Updates because of chefstyle 8.1.1 [#14971](https://github.com/chef/chef/pull/14971) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 19.1.18 -->
+- fix: ensure apt_repository keys are always dearmored [#14944](https://github.com/chef/chef/pull/14944) ([Fil0sOFF](https://github.com/Fil0sOFF)) <!-- 19.1.17 -->
+- Support arbitrary channel names in snap_package [#14950](https://github.com/chef/chef/pull/14950) ([williamtheaker](https://github.com/williamtheaker)) <!-- 19.1.16 -->
+- Cleanup debug in net-http monkeypatch [#14958](https://github.com/chef/chef/pull/14958) ([jaymzh](https://github.com/jaymzh)) <!-- 19.1.15 -->
+- add omnibus_chef_publish.rb [#14935](https://github.com/chef/chef/pull/14935) ([rishichawda](https://github.com/rishichawda)) <!-- 19.1.14 -->
+- Add oci? helper [#14902](https://github.com/chef/chef/pull/14902) ([wormsik](https://github.com/wormsik)) <!-- 19.1.13 -->
+- publish infra 19 gem to artifactory [#14921](https://github.com/chef/chef/pull/14921) ([rishichawda](https://github.com/rishichawda)) <!-- 19.1.12 -->
+- Fix cookstyle issues from the now enabled cops [#14924](https://github.com/chef/chef/pull/14924) ([tas50](https://github.com/tas50)) <!-- 19.1.11 -->
 - Migrate from chefstyle -&gt; cookstyle [#14922](https://github.com/chef/chef/pull/14922) ([tas50](https://github.com/tas50)) <!-- 19.1.10 -->
 - [CHEF-16732] Pipelines to build the client with habitat and deploy to chef/chef-hab docker repo [#14707](https://github.com/chef/chef/pull/14707) ([ashiqueps](https://github.com/ashiqueps)) <!-- 19.1.9 -->
 - update pre-command hook for pushing gem [#14917](https://github.com/chef/chef/pull/14917) ([rishichawda](https://github.com/rishichawda)) <!-- 19.1.8 -->

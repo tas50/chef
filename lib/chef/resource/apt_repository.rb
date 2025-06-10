@@ -201,7 +201,7 @@ class Chef
         # @return [Array] an array of fingerprints
         def extract_fingerprints_from_cmd(*cmd)
           so = shell_out(*cmd)
-          so.stdout.split(/\n/).map do |t|
+          so.stdout.split("\n").map do |t|
             if z = t.match(/^fpr:+([0-9A-F]+):/)
               z[1].split.join
             end
@@ -218,7 +218,7 @@ class Chef
           so = shell_out(*cmd)
           # Sample output
           # pub:-:4096:1:D94AA3F0EFE21092:1336774248:::-:::scSC::::::23::0:
-          so.stdout.split(/\n/).map do |t|
+          so.stdout.split("\n").map do |t|
             if t.match(/^pub:/)
               f = t.split(":")
               f.slice(0, 6).join(":")
@@ -237,15 +237,26 @@ class Chef
           valid
         end
 
-        # validate the key against the a gpg keyring to see if that version is expired
+        # validate the key against the gpg keyring to see if that version is expired or revoked
         # @param [String] key
+        # @param [String] keyring
         #
-        # @return [Boolean] is the key valid or not
+        # @return [Boolean] if the key valid or not
         def keyring_key_is_valid?(keyring, key)
-          valid = shell_out("gpg", "--no-default-keyring", "--keyring", keyring, "--list-public-keys", key).stdout.each_line.none?(/\[(expired|revoked):/)
+          out = shell_out("gpg", "--no-default-keyring", "--keyring", keyring, "--list-public-keys", key)
+          valid = out.exitstatus == 0 && out.stdout.each_line.none?(/\[(expired|revoked):/)
 
           logger.debug "key #{key} #{valid ? "is valid" : "is not valid"}"
           valid
+        end
+
+        # validate the key against the gpg keyring to see if the key is present
+        # @param [String] key
+        # @param [String] keyring
+        #
+        # @return [Boolean] if the key present
+        def keyring_key_is_present?(keyring, key)
+          shell_out(*%W{gpg --no-default-keyring --keyring #{keyring} --list-public-keys --with-fingerprint --with-colons #{key}}).exitstatus == 0
         end
 
         # return the specified cookbook name or the cookbook containing the
@@ -328,8 +339,18 @@ class Chef
           end
 
           # If signed by is true, then we don't need to
-          # add to the default keyring
-          unless new_resource.signed_by
+          # add to the default keyring. Instead make sure it's dearmored
+          if new_resource.signed_by
+            execute "gpg dearmor key" do
+              input ::File.read(keyfile_path)
+              command [ "gpg", "--batch", "--yes", "--dearmor", "-o", keyfile_path ]
+              default_env true
+              sensitive new_resource.sensitive
+              action :run
+              only_if { ::File.read(keyfile_path).include?("-----BEGIN PGP PUBLIC KEY BLOCK-----") }
+              notifies :run, "execute[apt-cache gencaches]", :immediately
+            end
+          else
             execute "apt-key add #{keyfile_path}" do
               command [ "apt-key", "add", keyfile_path ]
               default_env true
@@ -403,8 +424,7 @@ class Chef
             default_env true
             sensitive new_resource.sensitive
             not_if do
-              present = shell_out(*%W{gpg --no-default-keyring --keyring #{keyring} --list-public-keys --with-fingerprint --with-colons #{key}}).exitstatus != 0
-              present && keyring_key_is_valid?(keyring, key.upcase)
+              keyring_key_is_present?(keyring, key.upcase) && keyring_key_is_valid?(keyring, key.upcase)
             end
             notifies :run, "execute[apt-cache gencaches]", :immediately
           end

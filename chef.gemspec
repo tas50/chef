@@ -1,6 +1,6 @@
 # on Windows, the directory location starts with "(eval at " because it's
 # being evaled in
-file_directory = File.dirname(__FILE__).gsub(/\(eval at /, "")
+file_directory = File.dirname(__FILE__).gsub("(eval at ", "")
 $:.unshift(File.join(file_directory, "lib"))
 vs_path = File.expand_path("chef-utils/lib/chef-utils/version_string.rb", __dir__)
 
@@ -46,7 +46,7 @@ Gem::Specification.new do |s|
   s.add_dependency "ohai", "~> 19.0"
   s.add_dependency "inspec-core", "~> 7.0.38.beta"
 
-  s.add_dependency "ffi", ">= 1.15.5", "< 1.17.0"
+  s.add_dependency "ffi", ">= 1.15.5"
   s.add_dependency "ffi-yajl", "~> 2.2"
   s.add_dependency "net-sftp", ">= 2.1.2", "< 5.0" # remote_file resource
   s.add_dependency "net-ftp" # remote_file resource
