@@ -17,6 +17,7 @@
 
 require_relative "../resource"
 require "chef-utils/dist" unless defined?(ChefUtils::Dist)
+require "socket" unless defined?(Socket)
 
 class Chef
   class Resource
@@ -275,7 +276,7 @@ class Chef
             end
           end
 
-          unless Socket.gethostbyname(Socket.gethostname).first == new_resource.hostname
+          unless Addrinfo.getaddrinfo(Socket.gethostname, nil).first.getnameinfo.first == new_resource.hostname
             if is_domain_joined?
               if new_resource.domain_user.nil? || new_resource.domain_password.nil?
                 raise "The `domain_user` and `domain_password` properties are required to change the hostname of a domain-connected Windows system."

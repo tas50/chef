@@ -12,8 +12,6 @@ Security/Eval:
   Enabled: false
 Lint/UselessAssignment:
   Enabled: false
-Lint/DeprecatedClassMethods:
-  Enabled: false
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 Lint/AssignmentInCondition:
@@ -29,10 +27,6 @@ Lint/InterpolationCheck:
   Exclude:
     - 'spec/unit/property_spec.rb'
     - 'spec/functional/shell_spec.rb'
-Lint/DeprecatedConstants:
-  Enabled: true
-  Exclude:
-    - lib/chef/node/attribute.rb # false alarms
 
 # Disable these until we upgrade to a modern Rubocop release
 Layout/ArgumentAlignment:
