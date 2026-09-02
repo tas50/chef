@@ -84,7 +84,7 @@ class Chef::EncryptedDataBagItem
       end
 
       def for_decrypted_item
-        YAML.load(decrypted_data)
+        YAML.safe_load(decrypted_data, permitted_classes: [Symbol])
       end
 
       def decrypted_data
